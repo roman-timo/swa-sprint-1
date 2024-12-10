@@ -41,7 +41,6 @@
     "@playwright/test": "^1.45.0",
     "@types/node": "^20.14.9",
     "dotenv": "^16.0.2",
-    "wait-port": "^1.1.0",
-    "webpack": "^4.44.2"
+    "wait-port": "^1.1.0"
   }
 }
