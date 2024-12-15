@@ -14,7 +14,7 @@ import AddPlacePopup from "./AddPlacePopup";
 // import Login from "./Login";
 import InfoTooltip from "./InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute";
-// import * as auth from "../utils/auth.js";
+import * as auth from "../utils/auth.js";
 
 const Login = React.lazy(() => import("auth/Login"));
 const Register = React.lazy(() => import("auth/Register"));
@@ -144,33 +144,33 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  function onRegister({ email, password }) {
-    auth
-      .register(email, password)
-      .then((res) => {
-        setTooltipStatus("success");
-        setIsInfoToolTipOpen(true);
-        history.push("/signin");
-      })
-      .catch((err) => {
-        setTooltipStatus("fail");
-        setIsInfoToolTipOpen(true);
-      });
-  }
+  // function onRegister({ email, password }) {
+  //   auth
+  //     .register(email, password)
+  //     .then((res) => {
+  //       setTooltipStatus("success");
+  //       setIsInfoToolTipOpen(true);
+  //       history.push("/signin");
+  //     })
+  //     .catch((err) => {
+  //       setTooltipStatus("fail");
+  //       setIsInfoToolTipOpen(true);
+  //     });
+  // }
 
-  function onLogin({ email, password }) {
-    auth
-      .login(email, password)
-      .then((res) => {
-        setIsLoggedIn(true);
-        setEmail(email);
-        history.push("/");
-      })
-      .catch((err) => {
-        setTooltipStatus("fail");
-        setIsInfoToolTipOpen(true);
-      });
-  }
+  // function onLogin({ email, password }) {
+  //   auth
+  //     .login(email, password)
+  //     .then((res) => {
+  //       setIsLoggedIn(true);
+  //       setEmail(email);
+  //       history.push("/");
+  //     })
+  //     .catch((err) => {
+  //       setTooltipStatus("fail");
+  //       setIsInfoToolTipOpen(true);
+  //     });
+  // }
 
   function onSignOut() {
     // при вызове обработчика onSignOut происходит удаление jwt
@@ -201,12 +201,12 @@ function App() {
           />
           <Route path="/signup">
             <Suspense fallback={<div>Загрузка...</div>}>
-              <Register onRegister={onRegister} />
+              <Register />
             </Suspense>
           </Route>
           <Route path="/signin">
             <Suspense fallback={<div>Загрузка...</div>}>
-              <Login onLogin={onLogin} />
+              <Login />
             </Suspense>
           </Route>
         </Switch>
