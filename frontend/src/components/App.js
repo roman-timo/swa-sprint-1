@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Route, useHistory, Switch } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
@@ -200,10 +200,14 @@ function App() {
             loggedIn={isLoggedIn}
           />
           <Route path="/signup">
-            <Register onRegister={onRegister} />
+            <Suspense fallback={<div>Загрузка...</div>}>
+              <Register onRegister={onRegister} />
+            </Suspense>
           </Route>
           <Route path="/signin">
-            <Login onLogin={onLogin} />
+            <Suspense fallback={<div>Загрузка...</div>}>
+              <Login onLogin={onLogin} />
+            </Suspense>
           </Route>
         </Switch>
         <Footer />
