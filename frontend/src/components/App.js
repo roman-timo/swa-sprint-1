@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Route, useHistory, Switch } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
@@ -10,11 +10,14 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import Register from "./Register";
-import Login from "./Login";
+// import Register from "./Register";
+// import Login from "./Login";
 import InfoTooltip from "./InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute";
 import * as auth from "../utils/auth.js";
+
+const Login = React.lazy(() => import("auth/Login"));
+const Register = React.lazy(() => import("auth/Register"));
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
@@ -116,7 +119,7 @@ function App() {
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
         setCards((cards) =>
-          cards.map((c) => (c._id === card._id ? newCard : c))
+          cards.map((c) => (c._id === card._id ? newCard : c)),
         );
       })
       .catch((err) => console.log(err));
@@ -141,33 +144,33 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  function onRegister({ email, password }) {
-    auth
-      .register(email, password)
-      .then((res) => {
-        setTooltipStatus("success");
-        setIsInfoToolTipOpen(true);
-        history.push("/signin");
-      })
-      .catch((err) => {
-        setTooltipStatus("fail");
-        setIsInfoToolTipOpen(true);
-      });
-  }
+  // function onRegister({ email, password }) {
+  //   auth
+  //     .register(email, password)
+  //     .then((res) => {
+  //       setTooltipStatus("success");
+  //       setIsInfoToolTipOpen(true);
+  //       history.push("/signin");
+  //     })
+  //     .catch((err) => {
+  //       setTooltipStatus("fail");
+  //       setIsInfoToolTipOpen(true);
+  //     });
+  // }
 
-  function onLogin({ email, password }) {
-    auth
-      .login(email, password)
-      .then((res) => {
-        setIsLoggedIn(true);
-        setEmail(email);
-        history.push("/");
-      })
-      .catch((err) => {
-        setTooltipStatus("fail");
-        setIsInfoToolTipOpen(true);
-      });
-  }
+  // function onLogin({ email, password }) {
+  //   auth
+  //     .login(email, password)
+  //     .then((res) => {
+  //       setIsLoggedIn(true);
+  //       setEmail(email);
+  //       history.push("/");
+  //     })
+  //     .catch((err) => {
+  //       setTooltipStatus("fail");
+  //       setIsInfoToolTipOpen(true);
+  //     });
+  // }
 
   function onSignOut() {
     // при вызове обработчика onSignOut происходит удаление jwt
@@ -197,10 +200,14 @@ function App() {
             loggedIn={isLoggedIn}
           />
           <Route path="/signup">
-            <Register onRegister={onRegister} />
+            <Suspense fallback={<div>Загрузка...</div>}>
+              <Register />
+            </Suspense>
           </Route>
           <Route path="/signin">
-            <Login onLogin={onLogin} />
+            <Suspense fallback={<div>Загрузка...</div>}>
+              <Login />
+            </Suspense>
           </Route>
         </Switch>
         <Footer />
